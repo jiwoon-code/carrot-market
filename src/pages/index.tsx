@@ -3,13 +3,17 @@ import type { NextPage } from "next";
 const Home: NextPage = () => {
   return (
     <div className="bg-slate-400 xl:place-content-center py-20 px-20 grid lg:grid-cols-2 xl:grid-cols-3 gap-10 min-h-screen">
-      <div className="bg-white flex justify-between flex-col p-6 rounded-3xl shadow-3xl ">
-        <span className="font-semibold text-3xl">Select Item</span>
+      <div className="bg-white dark:bg-black flex justify-between flex-col p-6 rounded-3xl shadow-3xl ">
+        <span className="dark:text-white font-semibold text-3xl">
+          Select Item
+        </span>
         <ul>
           {[1, 2, 3].map((i) => (
             <div key={i} className="flex justify-between my-2 ">
-              <span className="text-gray-500">Grey Chair</span>
-              <span className="font-semibold">$19</span>
+              <span className="text-gray-500 dark:text-gray-100">
+                Grey Chair
+              </span>
+              <span className="font-semibold dark:text-gray-50">$19</span>
             </div>
           ))}
         </ul>
@@ -19,7 +23,7 @@ const Home: NextPage = () => {
           <span className="font-semibold">$10</span>
         </div>
         <button
-          className="mt-5 block bg-blue-500 text-white p-3 text-center rounded-xl w-3/4 mx-auto
+          className="mt-5 block bg-blue-500 dark:bg-black dark:border-white dark:border dark:hover:bg-amber-300 text-white p-3 text-center rounded-xl w-3/4 mx-auto
         hover:bg-teal-500 hover:text-black
         "
         >
