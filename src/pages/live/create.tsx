@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 
-const StreamsCreate: NextPage = () => {
+const LiveCreate: NextPage = () => {
   return (
     <div className="space-y-5 px-4 py-16">
       <div>
@@ -58,4 +58,4 @@ const StreamsCreate: NextPage = () => {
   );
 };
 
-export default StreamsCreate;
+export default LiveCreate;
