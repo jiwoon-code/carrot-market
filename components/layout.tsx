@@ -46,13 +46,22 @@ export default function Layout({
             </svg>
           </button>
         ) : null}
-        {title ? <span>{title}</span> : null}
+        {title ? (
+          <span className={cls(canGoBack ? "mx-auto" : "", "")}>{title}</span>
+        ) : null}
       </div>
       <div className={cls("py-16", hasTabBar ? "pb-24" : "")}>{children}</div>
       {hasTabBar ? (
         <nav className="flex bg-white max-w-lg text-gray-700 border-t fixed bottom-0 w-full pb-3 pt-2 px-5 justify-between text-xs">
           <Link legacyBehavior href="/">
-            <a id="home" className="flex flex-col items-center space-y-3">
+            <a
+              className={cls(
+                "flex flex-col items-center space-y-2 ",
+                router.pathname === "/"
+                  ? "text-orange-500"
+                  : "hover:text-gray-500 transition-colors"
+              )}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -71,7 +80,14 @@ export default function Layout({
             </a>
           </Link>
           <Link legacyBehavior href="/community">
-            <a id="community" className="flex flex-col items-center space-y-3">
+            <a
+              className={cls(
+                "flex flex-col items-center space-y-2 ",
+                router.pathname === "/community"
+                  ? "text-orange-500"
+                  : "hover:text-gray-500 transition-colors"
+              )}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -91,7 +107,14 @@ export default function Layout({
             </a>
           </Link>
           <Link legacyBehavior href="/chats">
-            <a id="chats" className="flex flex-col items-center space-y-3">
+            <a
+              className={cls(
+                "flex flex-col items-center space-y-2 ",
+                router.pathname === "/chats"
+                  ? "text-orange-500"
+                  : "hover:text-gray-500 transition-colors"
+              )}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -111,7 +134,14 @@ export default function Layout({
             </a>
           </Link>
           <Link legacyBehavior href="/live">
-            <a id="live" className="flex flex-col items-center space-y-3">
+            <a
+              className={cls(
+                "flex flex-col items-center space-y-2 ",
+                router.pathname === "/live"
+                  ? "text-orange-500"
+                  : "hover:text-gray-500 transition-colors"
+              )}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -130,7 +160,14 @@ export default function Layout({
             </a>
           </Link>
           <Link legacyBehavior href="/profile">
-            <a id="profile" className="flex flex-col items-center space-y-3">
+            <a
+              className={cls(
+                "flex flex-col items-center space-y-2 ",
+                router.pathname === "/profile"
+                  ? "text-orange-500"
+                  : "hover:text-gray-500 transition-colors"
+              )}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
