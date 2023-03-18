@@ -1,4 +1,4 @@
-import { FieldErrors, useForm } from "react-hook-form";
+import { FieldErrors, set, useForm } from "react-hook-form";
 
 interface LoginForm {
   username: string;
@@ -14,19 +14,20 @@ export default function Forms() {
     formState: { errors },
     watch,
     setError,
-    setValue,
-    reset,
-    resetField,
+    setValue, //값을 보여줌
+    reset, // reset
+    resetField, // 특정 값만 reset
   } = useForm<LoginForm>({
     mode: "onChange",
   });
   const onValid = (data: LoginForm) => {
     console.log("im valid bby");
+    setError("username", { message: "Backend is offline" });
   };
   const onInvalid = (errors: FieldErrors) => {
     console.log(errors);
   };
-
+  console.log(watch("email"));
   return (
     <form onSubmit={handleSubmit(onValid, onInvalid)}>
       <input
