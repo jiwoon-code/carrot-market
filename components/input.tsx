@@ -14,8 +14,8 @@ export default function Input({
   name,
   kind = "text",
   register,
-  required,
   type,
+  required,
 }: InputProps) {
   return (
     <div>
@@ -60,6 +60,7 @@ export default function Input({
           </span>
           <input
             id={name}
+            required={required}
             {...register}
             type={type}
             className="appearance-none w-full px-3 py-2 border border-gray-300 rounded-md rounded-l-none shadow-sm placeholder-gray-400 focus:outline-none focus:ring-orange-500 focus:border-orange-500"
