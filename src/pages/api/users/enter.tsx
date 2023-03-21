@@ -30,7 +30,7 @@ async function handler(
       },
     },
   });
-  if (phone) {
+  /*   if (phone) {
     const message = await twilioClient.messages.create({
       messagingServiceSid: process.env.TWILIO_MSID,
       to: process.env.MY_PHONE!,
@@ -59,7 +59,8 @@ async function handler(
     );
     smtpTransport.close();
     console.log(result);
-  }
+  } */
+  // 줄바꿈 ㅎㅅㅎ
   /*  if (email) {
     user = await client.user.findUnique({
       where: {
