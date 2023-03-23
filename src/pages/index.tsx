@@ -2,7 +2,6 @@ import type { NextPage } from "next";
 import LayOut from "@components/layout";
 import FloatingButton from "@components/floating-button";
 import Item from "@components/item";
-import "@libs/server/client";
 import useUser from "@libs/client/useUser";
 import Head from "next/head";
 
