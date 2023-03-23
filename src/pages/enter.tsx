@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { cls } from "@libs/client/utils";
 import Button from "@components/button";
 import Input from "@components/input";
@@ -6,6 +6,7 @@ import type { NextPage } from "next";
 import { useForm } from "react-hook-form";
 import useMutation from "@libs/client/useMutation";
 import { Token } from "@prisma/client";
+import { useRouter } from "next/router";
 
 interface EnterForm {
   email?: string;
@@ -45,6 +46,12 @@ const Enter: NextPage = () => {
     if (tokenLoading) return;
     confirmToken(valForm);
   };
+  const router = useRouter();
+  useEffect(() => {
+    if (tokenData?.ok) {
+      router.push("/");
+    }
+  }, [tokenData, router]);
   return (
     <div className="mt-16 px-4">
       <h3 className="text-3xl font-bold text-center">Enter to Carrot</h3>
