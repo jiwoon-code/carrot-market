@@ -7,7 +7,10 @@ async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseType>
 ) {
-  const { id } = req.query; //해당하는 product찾기
+  const {
+    query: { id },
+    session: { user },
+  } = req; //해당하는 product찾기
   const product = await client.product.findUnique({
     where: {
       id: +id!.toString(),
@@ -37,7 +40,18 @@ async function handler(
       },
     },
   });
-  res.json({ ok: true, product, relatedProducts });
+  const isLinked = Boolean(
+    await client.fav.findFirst({
+      where: {
+        productId: product?.id,
+        userId: user?.id,
+      },
+      select: {
+        id: true,
+      },
+    })
+  );
+  res.json({ ok: true, product, isLinked, relatedProducts });
 }
 
 export default withApiSession(
