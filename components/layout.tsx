@@ -25,7 +25,7 @@ export default function Layout({
       <div
         className={cls(
           !canGoBack ? " justify-center" : "",
-          "bg-white max-w-lg w-full px-5 text-lg font-medium py-1 fixed text-gray-700 border-b top-0 flex items-center"
+          "bg-white max-w-lg w-full px-3 text-lg font-medium py-1 fixed text-gray-700 border-b top-0 flex items-center"
         )}
       >
         {canGoBack ? (
@@ -133,11 +133,11 @@ export default function Layout({
               <span>채팅</span>
             </a>
           </Link>
-          <Link legacyBehavior href="/live">
+          <Link legacyBehavior href="/streams">
             <a
               className={cls(
                 "flex flex-col items-center space-y-2 ",
-                router.pathname === "/live"
+                router.pathname === "/streams"
                   ? "text-orange-500"
                   : "hover:text-gray-500 transition-colors"
               )}
