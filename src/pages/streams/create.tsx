@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import useMutation from "@libs/client/useMutation";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-import { Stream } from "stream";
+import { Stream } from "@prisma/client";
 
 interface CreateForm {
   name: string;
@@ -43,7 +43,7 @@ const LiveCreate: NextPage = () => {
           type="text"
         />
         <Input
-          register={register("price", { required: true })}
+          register={register("price", { required: true, valueAsNumber: true })}
           required
           label="Price"
           name="price"
