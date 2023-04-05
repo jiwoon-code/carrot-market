@@ -7,7 +7,7 @@ import { Stream } from "@prisma/client";
 import { useForm } from "react-hook-form";
 import useMutation from "@libs/client/useMutation";
 import useUser from "@libs/client/useUser";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 interface StreamMessage {
   message: string;
@@ -33,6 +33,10 @@ interface MessageForm {
 
 const StreamDetail: NextPage = () => {
   const { user } = useUser();
+  const scrollRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    scrollRef?.current?.scrollIntoView();
+  });
   const router = useRouter();
   const { register, handleSubmit, reset } = useForm<MessageForm>();
   const { data, mutate } = useSWR<StreamResponse>(
@@ -41,6 +45,7 @@ const StreamDetail: NextPage = () => {
       refreshInterval: 1000,
     }
   );
+
   const [sendMessage, { loading, data: sendMessageData }] = useMutation(
     `/api/streams/${router.query.id}/messages`
   );
@@ -80,15 +85,18 @@ const StreamDetail: NextPage = () => {
         </div>
         <div>
           <h2 className="text-2xl font-bold text-gray-900">Live Chat</h2>
-          <div className="py-10 pb-16 h-[50vh] overflow-y-scroll  px-4 space-y-4">
+          <div className="py-10 pb-16 h-[50vh] scrollbar-thin scrollbar-thumb-orange-500 scrollbar-track-amber-300 overflow-y-scroll dark:scrollbar-thumb-orange-400 dark:scrollbar-track-slate-200  px-4 space-y-4 ">
             {data?.stream.messages.map((message) => (
-              <Message
-                key={message.id}
-                message={message.message}
-                reversed={message.user.id === user?.id}
-              />
+              <div ref={scrollRef}>
+                <Message
+                  key={message.id}
+                  message={message.message}
+                  reversed={message.user.id === user?.id}
+                />
+              </div>
             ))}
           </div>
+
           <div className="fixed py-2 bg-white  bottom-0 inset-x-0">
             <form
               onSubmit={handleSubmit(onValid)}

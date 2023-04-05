@@ -10,7 +10,7 @@ function CustomUser() {
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <div className="w-full max-w-lg mx-auto">
+    <div className="w-full max-w-lg mx-auto ">
       {/* Global에 useSWR fetcher... 등 함수 기본 설정 */}
       <SWRConfig
         value={{
