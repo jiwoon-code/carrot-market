@@ -38,18 +38,35 @@ const EditProfile: NextPage = () => {
   }, [user, setValue]);
   const [editProfile, { data, loading }] =
     useMutation<EditProfileResponse>(`/api/users/me`);
-  const onValid = ({ email, phone, name, photo, avatar }: EditProfileForm) => {
+  const onValid = async ({
+    email,
+    phone,
+    name,
+    photo,
+    avatar,
+  }: EditProfileForm) => {
     if (loading) return;
     if (email === "" && phone === "" && name === "") {
       setError("formErrors", {
         message: "Please write down your email address or phone number",
       });
     }
-    editProfile({
-      email,
-      phone,
-      name,
-    });
+    if (photo && photo.length > 0) {
+      const cloudflareRequest = await (await fetch(`/api/files`)).json();
+      return;
+      editProfile({
+        email,
+        phone,
+        name,
+        // photoURL: CF URL
+      });
+    } else {
+      editProfile({
+        email,
+        phone,
+        name,
+      });
+    }
   };
   useEffect(() => {
     if (data && !data.ok && data.error) {
