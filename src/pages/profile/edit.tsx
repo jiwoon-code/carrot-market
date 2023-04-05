@@ -4,13 +4,15 @@ import Layout from "@components/layout";
 import Input from "@components/input";
 import useUser from "@libs/client/useUser";
 import { useForm } from "react-hook-form";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useMutation from "@libs/client/useMutation";
 
 interface EditProfileForm {
   email?: string;
   phone?: string;
   formErrors?: string;
+  photo?: FileList;
+  avatar?: FileList;
   name?: string;
 }
 
@@ -26,6 +28,7 @@ const EditProfile: NextPage = () => {
     setValue,
     handleSubmit,
     setError,
+    watch,
     formState: { errors },
   } = useForm<EditProfileForm>();
   useEffect(() => {
@@ -35,7 +38,7 @@ const EditProfile: NextPage = () => {
   }, [user, setValue]);
   const [editProfile, { data, loading }] =
     useMutation<EditProfileResponse>(`/api/users/me`);
-  const onValid = ({ email, phone, name }: EditProfileForm) => {
+  const onValid = ({ email, phone, name, photo, avatar }: EditProfileForm) => {
     if (loading) return;
     if (email === "" && phone === "" && name === "") {
       setError("formErrors", {
@@ -53,11 +56,34 @@ const EditProfile: NextPage = () => {
       setError("formErrors", { message: data.error });
     }
   }, [data, setError]);
+  const [photoPreview, setPhotoPreview] = useState("");
+  const photo = watch("photo");
+  useEffect(() => {
+    if (photo && photo.length > 0) {
+      const photoFile = photo[0];
+      setPhotoPreview(URL.createObjectURL(photoFile));
+    }
+  }, [photo]);
+  const [avatarPreview, setAvatarPreview] = useState("");
+  const avatar = watch("avatar");
+  useEffect(() => {
+    if (avatar && avatar.length > 0) {
+      const avatarFile = avatar[0];
+      setAvatarPreview(URL.createObjectURL(avatarFile));
+    }
+  }, [avatar]);
   return (
     <Layout canGoBack title="Edit Profile">
       <form onSubmit={handleSubmit(onValid)} className="py-10 px-4 space-y-4">
         <div className="flex flex-col space-y-5  items-center space-x-3 mb-20">
-          <div className="w-20 h-20 rounded-full bg-slate-500" />
+          {photoPreview ? (
+            <img
+              src={photoPreview}
+              className="w-20 h-20 rounded-full bg-slate-500"
+            />
+          ) : (
+            <div className="w-20 h-20 rounded-full bg-orange-500" />
+          )}
           <div className="flex space-x-3">
             <label
               htmlFor="picture"
@@ -65,6 +91,7 @@ const EditProfile: NextPage = () => {
             >
               Photo
               <input
+                {...register("photo")}
                 id="picture"
                 type="file"
                 className="hidden"
@@ -77,6 +104,7 @@ const EditProfile: NextPage = () => {
             >
               Avatar
               <input
+                {...register("avatar")}
                 id="picture"
                 type="file"
                 className="hidden"
