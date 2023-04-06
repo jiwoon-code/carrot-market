@@ -11,7 +11,6 @@ interface EditProfileForm {
   email?: string;
   phone?: string;
   formErrors?: string;
-  photo?: FileList;
   avatar?: FileList;
   name?: string;
 }
@@ -35,30 +34,39 @@ const EditProfile: NextPage = () => {
     if (user?.name) setValue("name", user.name);
     if (user?.email) setValue("email", user.email);
     if (user?.phone) setValue("phone", user.phone);
+    if (user?.avatar)
+      setAvatarPreview(
+        `https://imagedelivery.net/QyO7kx8Ch6bnYmZxM4zHKA/${user?.avatar}/public`
+      );
   }, [user, setValue]);
   const [editProfile, { data, loading }] =
     useMutation<EditProfileResponse>(`/api/users/me`);
-  const onValid = async ({
-    email,
-    phone,
-    name,
-    photo,
-    avatar,
-  }: EditProfileForm) => {
+  const onValid = async ({ email, phone, name, avatar }: EditProfileForm) => {
     if (loading) return;
     if (email === "" && phone === "" && name === "") {
       setError("formErrors", {
         message: "Please write down your email address or phone number",
       });
     }
-    if (photo && photo.length > 0) {
-      const cloudflareRequest = await (await fetch(`/api/files`)).json();
-      return;
+    if (avatar && avatar.length > 0 && user) {
+      const { uploadURL } = await (await fetch(`/api/files`)).json();
+
+      const form = new FormData();
+      form.append("file", avatar[0], user?.id + "");
+      const {
+        result: { id },
+      } = await (
+        await fetch(uploadURL, {
+          method: "POST",
+          body: form,
+        })
+      ).json();
+
       editProfile({
         email,
         phone,
         name,
-        // photoURL: CF URL
+        avatarId: id,
       });
     } else {
       editProfile({
@@ -73,30 +81,23 @@ const EditProfile: NextPage = () => {
       setError("formErrors", { message: data.error });
     }
   }, [data, setError]);
-  const [photoPreview, setPhotoPreview] = useState("");
-  const photo = watch("photo");
-  useEffect(() => {
-    if (photo && photo.length > 0) {
-      const photoFile = photo[0];
-      setPhotoPreview(URL.createObjectURL(photoFile));
-    }
-  }, [photo]);
+
   const [avatarPreview, setAvatarPreview] = useState("");
   const avatar = watch("avatar");
   useEffect(() => {
     if (avatar && avatar.length > 0) {
-      const avatarFile = avatar[0];
-      setAvatarPreview(URL.createObjectURL(avatarFile));
+      const file = avatar[0];
+      setAvatarPreview(URL.createObjectURL(file));
     }
   }, [avatar]);
   return (
     <Layout canGoBack title="Edit Profile">
       <form onSubmit={handleSubmit(onValid)} className="py-10 px-4 space-y-4">
-        <div className="flex flex-col space-y-5  items-center space-x-3 mb-20">
-          {photoPreview ? (
+        <div className="flex flex-col space-y-5 items-center space-x-3 mb-20">
+          {avatarPreview ? (
             <img
-              src={photoPreview}
-              className="w-20 h-20 rounded-full bg-slate-500"
+              src={avatarPreview}
+              className=" w-20 h-20 rounded-full bg-orange-500"
             />
           ) : (
             <div className="w-20 h-20 rounded-full bg-orange-500" />
@@ -104,20 +105,7 @@ const EditProfile: NextPage = () => {
           <div className="flex space-x-3">
             <label
               htmlFor="picture"
-              className="cursor-pointer py-2 px-5 text-orange-500 border border-gray-300 rounded-lg shadow-sm text-sm font-semibold focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
-            >
-              Photo
-              <input
-                {...register("photo")}
-                id="picture"
-                type="file"
-                className="hidden"
-                accept="image/*"
-              />
-            </label>
-            <label
-              htmlFor="picture"
-              className="cursor-pointer py-2 px-5 text-orange-500 border border-gray-300 rounded-lg shadow-sm text-sm font-semibold focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
+              className="cursor-pointer py-2 px-7 text-orange-500 border border-gray-300 rounded-lg shadow-sm text-sm font-semibold focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
             >
               Avatar
               <input
