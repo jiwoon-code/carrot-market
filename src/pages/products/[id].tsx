@@ -9,6 +9,7 @@ import Id from "../api/products/[id]";
 import useMutation from "@libs/client/useMutation";
 import { cls } from "@libs/client/utils";
 import useUser from "@libs/client/useUser";
+import Image from "next/image";
 
 interface ProductWithUser extends Product {
   user: User;
@@ -44,7 +45,10 @@ const ItemDetail: NextPage = () => {
             className="h-96 bg-gray-500"
           />
           <div className="flex cursor-pointer py-3 border-b border-t items-center space-x-3">
-            <img
+            <Image
+              width={48}
+              height={48}
+              alt="Picture of the author"
               src={`https://imagedelivery.net/QyO7kx8Ch6bnYmZxM4zHKA/${data?.product.user.avatar}/public`}
               className="w-12 h-12 rounded-full bg-slate-300"
             />
